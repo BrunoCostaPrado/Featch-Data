@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
+const api = axios.create({ baseURL: "https://api.github.com/" });
+export function useFetch<T = unknown>(
+  url: string,
+  options?: AxiosRequestConfig
+) {
+  const [data, setData] = useState<T | null>(null);
+  const [isFetching, setisFetching] = useState(true);
+  const [error, setisError] = useState<Error | null>(null);
 
-
-export function useFetch<T=unknown>(url:string){
-    const [data, setData] = useState<T|null>(null)
-
-
-    useEffect(() => {
-        axios
-          .get("https://api.github.com/users/BrunoCostaPrado/repos")
-          .then((response) => {
-            setData(response.data);
-          });
-      }, []);
+  useEffect(() => {
+    api
+      .get(url)
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((err) => {
+        setisError(err);
+      })
+      .finally(() => {
+        setisFetching(false);
+      });
+  }, []);
+  return { data, error, isFetching };
 }
