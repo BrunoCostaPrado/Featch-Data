@@ -9,18 +9,17 @@ export function Repo() {
   const queryClient = useQueryClient();
 
   async function handleChangeRepositoryDescription() {
-    
-    
     const previousRepos = queryClient.getQueriesData<Repository[]>(["repos"]);
 
     if (previousRepos) {
-      const nextRepos = previousRepos.map(repo => {
+      const nextRepos = previousRepos.map((repo) => {
         if (repo.full_name === currentRepository) {
           return { ...repo, descritiption: "Testando" };
         } else {
           return repo;
         }
       });
+      queryClient.setQueryData("repos", nextRepos);
     }
   }
   return (

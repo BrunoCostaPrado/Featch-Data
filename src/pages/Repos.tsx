@@ -17,19 +17,17 @@ export function Repos() {
       return response.data;
     },
     {
-      staleTime: 1000*60,//1 minuto
+      staleTime: 1000 * 60, //1 minuto
     }
   );
 
   return (
     <ul>
       {isFetching && <p>Carregando...</p>}
-      {data?.map(repo => {
+      {data?.map((repo) => {
         return (
           <li key={repo.full_name}>
-            <Link to={`repos/${repo.full_name}`}>
-                {repo.full_name}
-            </Link>
+            <Link to={`repos/${repo.full_name}`}>{repo.full_name}</Link>
             <p>{repo.description}</p>
           </li>
         );
